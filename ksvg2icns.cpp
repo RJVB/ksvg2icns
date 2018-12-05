@@ -117,7 +117,8 @@ int main(int argc, char *argv[])
     bool isOk;
 
     // create a temporary dir to create an iconset
-    QTemporaryDir tmpDir(QDir::tempPath() + QStringLiteral("/ksvg2icns"));
+    QDir(QDir::tempPath()).mkdir(QStringLiteral("ksvg2icns"));
+    QTemporaryDir tmpDir(QDir::tempPath() + QStringLiteral("/ksvg2icns/XXXXXX"));
 
     isOk = tmpDir.isValid();
     EXIT_ON_ERROR(isOk, "Unable to create temporary directory\n");
