@@ -46,6 +46,9 @@
     do { \
         if (!(isOk)) { \
             fprintf(stderr, __VA_ARGS__); \
+            if (tmpDir.isValid()) { \
+                qCritical() << "Temporary dir not removed:" << tmpDir.path(); \
+            } \
             return 1; \
         } \
     } while (false);
