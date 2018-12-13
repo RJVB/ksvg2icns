@@ -94,7 +94,7 @@ void dumpFontList()
 int main(int argc, char *argv[])
 {
     if (qEnvironmentVariableIsEmpty("QT_QPA_PLATFORM")) {
-        // Try to use the offscreen platform plugin unless the user specifies a plugin.
+        // Try to use the offscreen platform plugin unless the user specified a plugin.
         // Do this only with a Qt version known to support fonts in the offscreen plugin.
         // TODO: simplify when Qt 5.9 support is dropped.
         QVersionNumber runningQtVersion = QVersionNumber::fromString(QLatin1String(qVersion()));
