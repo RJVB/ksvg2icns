@@ -34,6 +34,7 @@
 #include <QPainter>
 #include <QSvgRenderer>
 #include <QFontDatabase>
+#include <QVersionNumber>
 #include <QDebug>
 
 #if defined(TRANSLATION_DOMAIN)
@@ -93,9 +94,18 @@ void dumpFontList()
 int main(int argc, char *argv[])
 {
     if (qEnvironmentVariableIsEmpty("QT_QPA_PLATFORM")) {
-        qputenv("QT_QPA_PLATFORM", QByteArrayLiteral("offscreen"));
+        // Try to use the offscreen platform plugin unless the user specifies a plugin.
+        // Do this only with a Qt version known to support fonts in the offscreen plugin.
+        // TODO: simplify when Qt 5.9 support is dropped.
+        QVersionNumber runningQtVersion = QVersionNumber::fromString(QLatin1String(qVersion()));
+        if ((runningQtVersion.majorVersion() == 5
+            && runningQtVersion.minorVersion() == 9 && runningQtVersion.microVersion() >= 8)
+            || runningQtVersion >= QVersionNumber(5, 12, 1)) {
+                qputenv("QT_QPA_PLATFORM", QByteArrayLiteral("offscreen"));
+            }
     }
     QGuiApplication app(argc, argv);
+    qWarning() << "Using platform" << QGuiApplication::platformName();
 
     app.setApplicationName(QStringLiteral("ksvg2icns"));
 #ifdef KICONTHEMES_VERSION_STRING
